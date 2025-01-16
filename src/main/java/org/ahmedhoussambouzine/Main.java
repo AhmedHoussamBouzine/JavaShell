@@ -75,6 +75,7 @@ public class Main {
                             fullCommand[0] = command;
                             System.arraycopy(input, 1, fullCommand, 1, input.length - 1);
                             // Execute the external program with arguments
+
                             Process process = Runtime.getRuntime().exec(fullCommand);
                             process.getInputStream().transferTo(System.out);
                             process.getErrorStream().transferTo(System.err);
