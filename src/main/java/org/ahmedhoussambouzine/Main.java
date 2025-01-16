@@ -1,4 +1,5 @@
 package org.ahmedhoussambouzine;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -20,10 +21,12 @@ public class Main {
         Scanner scanner;
         String ss, type;
         List<String> commands = new ArrayList<>();
+        String dir = String.valueOf(Path.of("").toAbsolutePath());
         commands.add("echo");
         commands.add("type");
         commands.add("exit");
         commands.add("pwd");
+        commands.add("cd");
         while (true) {
             System.out.print("$ ");
             scanner = new Scanner(System.in);
@@ -50,7 +53,15 @@ public class Main {
                     System.out.println(parameter);
                     break;
                 case "pwd":
-                    System.out.println(Paths.get("").toAbsolutePath());
+                    System.out.println(dir);
+                    break;
+                case "cd":
+                    if (Files.isDirectory(Path.of(String.valueOf(parameter)))) {
+                        dir = String.valueOf(parameter);
+                    } else {
+                        System.out.println("cd: " + parameter +
+                                ": No such file or directory");
+                    }
                     break;
                 case "type":
                     type = parameter.toString();
@@ -75,7 +86,6 @@ public class Main {
                             fullCommand[0] = command;
                             System.arraycopy(input, 1, fullCommand, 1, input.length - 1);
                             // Execute the external program with arguments
-
                             Process process = Runtime.getRuntime().exec(fullCommand);
                             process.getInputStream().transferTo(System.out);
                             process.getErrorStream().transferTo(System.err);
